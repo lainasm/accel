@@ -48,6 +48,10 @@ fn fix_length(s: &str, l: usize) -> String {
 fn main() {
     setlocale(LcCategory::all, "").unwrap();
     initscr();
+    noecho();
+
+    let mut cursor_x = 0;
+    let mut cursor_y = 0;
 
     let mut cells = Vec::new();
 
@@ -61,6 +65,27 @@ fn main() {
         cell.draw();
     }
     refresh();
-    getch();
+    loop {
+        mv(cursor_y * 3 + 1, cursor_x * CELL_WIDTH + 1);
+
+        let c = getch();
+
+        if c == 'q' as i32 {
+            break;
+        }
+
+        if c == 'j' as i32 {
+            cursor_y += 1;
+        }
+        if c == 'k' as i32 {
+            cursor_y -= 1;
+        }
+        if c == 'h' as i32 {
+            cursor_x -= 1;
+        }
+        if c == 'l' as i32 {
+            cursor_x += 1;
+        }
+    }
     endwin();
 }
